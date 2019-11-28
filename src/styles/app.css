@@ -1,0 +1,44 @@
+body {
+    background: url("../images/background.jpg");
+}
+
+button, input, select {
+    outline: none;
+}
+
+#enter {
+    width: 20%;
+    margin-top: 17%;
+    margin-left: 40%;
+    border: 10px ridge teal;
+    border-radius: 30px;
+    text-align: center;
+    padding: 3px;
+}
+
+#microTable {
+    width: 15%;
+}
+
+#panel {
+    width: 20%;
+    margin-left: 40%;
+    margin-top: 16px;
+    background: white;
+    border: 5px ridge teal;
+    padding: 5px;
+}
+
+.microMarginTop {
+    margin-top: 5px;
+}
+
+#label {
+    text-align: left;
+    padding-left: 3px;
+}
+
+#admin {
+    width: 10%;
+    min-width: 120px;
+}
