@@ -8,7 +8,9 @@ import {Admin} from "./components/admin";
 import {Partner} from "./components/partner";
 
 class NotFound extends Component {
-  render() {return <h1>not found</h1>}
+  render() {
+      return <h1>not found</h1>
+  }
 }
 
 class App extends Component {
