@@ -4,14 +4,15 @@ import {TDselect} from "./tdSelect";
 
 export class TablePaper extends Component {
     render() {
-        const items = this.props.papers.map((paper) => {
+        const value = this.props;
+        const items = value.papers.map((paper) => {
             return <TD key={paper.name} value={paper.name}/>
         });
-        const counts = this.props.papers.map((paper) => {
+        const counts = value.papers.map((paper) => {
             return <TD key={paper.name} value={paper.count}/>
         });
-        const rules = this.props.papers.map((paper) => {
-            return <TDselect key={paper.name} rule={paper.rule} isStart={this.props.isStart} socket={this.props.socket} paper={paper.name}/>
+        const rules = value.papers.map((paper) => {
+            return <TDselect key={paper.name} rule={paper.rule} name={paper.name} isStart={value.isStart} socket={value.socket}/>
         });
         return (
             <table className="w3-table-all w3-hoverable w3-centered w3-card-4 w3-center w3-margin-top">
