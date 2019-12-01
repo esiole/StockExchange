@@ -2,15 +2,14 @@ import React, {Component} from 'react';
 
 export class TDselect extends Component {
     render() {
-        const socket = this.props.socket;
-        const paper = this.props.paper;
+        const value = this.props;
         function sendSocket(e) {
-            socket.json.emit('rules', {value: e.target.value, paper: paper});
+            value.socket.json.emit('rules', {value: e.target.value, paper: value.name});
         }
-        if(this.props.rule === 'нормальный') {
+        if(value.rule === 'нормальный') {
             return (
                 <td>
-                    <select disabled={this.props.isStart} onChange={sendSocket} className="w3-select">
+                    <select disabled={value.isStart} onChange={sendSocket} className="w3-select">
                         <option selected="selected">нормальный</option>
                         <option>равномерный</option>
                     </select>
@@ -19,7 +18,7 @@ export class TDselect extends Component {
         } else {
             return (
                 <td>
-                    <select disabled={this.props.isStart} onChange={sendSocket} className="w3-select">
+                    <select disabled={value.isStart} onChange={sendSocket} className="w3-select">
                         <option>нормальный</option>
                         <option selected="selected">равномерный</option>
                     </select>

@@ -3,7 +3,8 @@ import {TD} from "./td";
 
 export class TRpaper extends Component {
     render() {
-        const items = this.props.papers.map((paper) => {
+        const value = this.props.papers;
+        const items = value.map((paper) => {
             return <TD key={paper.name} value={paper.name}/>;
         });
         return (

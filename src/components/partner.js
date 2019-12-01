@@ -1,97 +1,10 @@
 import React, {Component} from 'react';
 import openSocket from 'socket.io-client';
 import axios from "axios";
-
-function PartnerTitle(props) {
-    const value = props.partner;
-    const startMoney = props.startMoney;
-    const profit = value.money - startMoney;
-    return (
-        <table className="w3-table-all w3-centered w3-card-4 w3-center w3-margin-top" id="microTable">
-            <caption className="w3-cyan"><b><i>Участник</i></b></caption>
-            <tr className="w3-teal">
-                <td>Участник</td>
-                <td>Баланс</td>
-                <td>Прибыль</td>
-            </tr>
-            <tr>
-                <td>{value.name}</td>
-                <td>{value.money}</td>
-                <td>{profit}</td>
-            </tr>
-        </table>
-    );
-}
-
-function PaperTD(props) {
-    const name = props.paper;
-    return <td>{name}</td>
-}
-
-function PartnerPapers(props) {
-    const value = props;
-    const items = value.buy.map((paper) => {
-        return <PaperTD key={paper.paper} paper={paper.paper}/>;
-    });
-    const counts = value.buy.map((paper) => {
-        return <PaperTD key={paper.paper} paper={paper.buy}/>;
-    });
-    const price = value.buy.map((paper) => {
-        return <PaperTD key={paper.paper} paper={parseInt(paper.buy)*parseInt(paper.price)}/>;
-    });
-    return (
-        <table className="w3-table-all w3-hoverable w3-centered w3-card-4 w3-center w3-margin-top">
-            <caption className="w3-cyan"><b><i>Состояние</i></b></caption>
-            <tr className="w3-teal">
-                <td>Акция</td>
-                {items}
-            </tr>
-            <tr>
-                <td className="w3-cyan">Количество купленных</td>
-                {counts}
-            </tr>
-            <tr>
-                <td className="w3-teal">Их стоимость</td>
-                {price}
-            </tr>
-        </table>
-    );
-}
-
-function Market(props) {
-    const value = props.papers;
-    const items = value.map((paper) => {
-        return <PaperTD key={paper.name} paper={paper.name}/>;
-    });
-    const counts = value.map((paper) => {
-        return <PaperTD key={paper.name} paper={paper.count}/>;
-    });
-    const price = value.map((paper) => {
-        return <PaperTD key={paper.name} paper={paper.startPrice}/>;
-    });
-    return (
-        <table className="w3-table-all w3-hoverable w3-centered w3-card-4 w3-center w3-margin-top">
-            <caption className="w3-teal"><b><i>Торги сейчас</i></b></caption>
-            <tr className="w3-cyan">
-                <td>Акция</td>
-                {items}
-            </tr>
-            <tr>
-                <td className="w3-teal">Количество</td>
-                {counts}
-            </tr>
-            <tr>
-                <td className="w3-cyan">Cтоимость одной</td>
-                {price}
-            </tr>
-        </table>
-    );
-}
-
-function PaperOption(props) {
-    const name = props.paper;
-    return <option>{name}</option>
-}
+import {TablePartnerPapers} from "./tablePartnerPapers";
+import {Option} from "./option";
+import {TablePartnerTitle} from "./tablePartnerTitle";
+import {TableMarket} from "./tableMarket";
 
 export class Partner extends Component{
     constructor(props) {
@@ -224,13 +137,13 @@ export class Partner extends Component{
         if(!isLoaded) return <h1>Загрузка...</h1>;
         else {
             const items = papers.map((paper) => {
-                return <PaperOption key={paper.name} paper={paper.name}/>;
+                return <Option key={paper.name} value={paper.name}/>
             });
             return (
                 <div className="w3-margin">
-                    <PartnerTitle partner={partner} startMoney={startMoney}/>
-                    <PartnerPapers papers={papers} buy={buy}/>
-                    <Market papers={papers}/>
+                    <TablePartnerTitle partner={partner} startMoney={startMoney}/>
+                    <TablePartnerPapers buy={buy}/>
+                    <TableMarket papers={papers}/>
                     <div className="w3-center w3-container" id="panel">
                         <div className="w3-container w3-teal" id="label">
                             <h3><b><i>Сделка</i></b></h3>
