@@ -23,7 +23,7 @@ export class Partner extends Component{
             isStart: false
         };
         this.socket = openSocket('http://localhost:3030');
-        this.socket.on("connect", () => {this.socket.json.emit("hello", {"name": "partner"});});
+        this.socket.on("connect", () => {this.socket.json.emit("hello", {"name": this.state.partner.name});});
         this.socket.on('action', (msg) => {
             let temp = this.state.papers;
             let buy = this.state.buy;

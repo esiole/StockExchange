@@ -21,6 +21,7 @@ let arrayEnd = config.settings.end.split(":");
 let arrayInterval = config.settings.interval.split(":");
 let interval = parseInt(arrayInterval[0])*60*1000 + parseInt(arrayInterval[1])*1000;
 let admin = '';
+let lastPartner;
 let randomInterval;
 
 let isStart = false;
@@ -42,12 +43,9 @@ io.sockets.on('connection', (socket) => {
     socket.on('hello', (msg) => {
         socket["name"] = msg.name;
         if(msg.name === "ADMIN") admin = socket.id;
-        //else send("msg", socket, `${msg.name} участвует в аукционе`);
     });
 
-    socket.on('disconnect', (msg) => {
-        //if(socket["name"] !== "ADMIN") send("msg", socket, `${socket["name"]} покинул аукцион`);
-    });
+    socket.on('disconnect', (msg) => {});
 
     socket.on('action', (msg) => {
        socket.json.emit('action', msg);
@@ -58,7 +56,6 @@ io.sockets.on('connection', (socket) => {
         socket.broadcast.json.emit('start');
         isStart = true;
         clearInterval(startInterval);
-        //io.sockets.sockets[admin].json.emit();
         randomInterval = setInterval(() => {
             let test = [];
             for(let elem of config.papers) {
@@ -71,7 +68,7 @@ io.sockets.on('connection', (socket) => {
 
     socket.on('rules', (msg) => {
         for(let elem of config.papers) {
-            if(elem.name == msg.paper) {
+            if(elem.name === msg.paper) {
                 elem.rule = msg.value;
                 break;
             }
@@ -79,7 +76,7 @@ io.sockets.on('connection', (socket) => {
     });
 
     let startInterval = setInterval(() => {
-        if(arrayBegin[1] == new Date().getMinutes() && arrayBegin[0] == new Date().getHours()) {
+        if(arrayBegin[1] === new Date().getMinutes() && arrayBegin[0] === new Date().getHours()) {
             clearInterval(startInterval);
             socket.json.emit('start');
             if(!isStart) {
@@ -98,7 +95,7 @@ io.sockets.on('connection', (socket) => {
     }, 500);
 
     let endInterval = setInterval(() => {
-        if(arrayEnd[1] == new Date().getMinutes() && arrayEnd[0] == new Date().getHours()) {
+        if(arrayEnd[1] === new Date().getMinutes() && arrayEnd[0] === new Date().getHours()) {
             clearInterval(endInterval);
             clearInterval(randomInterval);
             socket.json.emit('end');
@@ -106,18 +103,12 @@ io.sockets.on('connection', (socket) => {
     }, 500);
 });
 
-function send(type, socket, msg, otherSockets = true) {
-    socket.json.emit(type, {"message": msg, "time": new Date()});
-    if(otherSockets) socket.broadcast.json.emit(type, {"message": msg, "time": new Date()});
-}
-
 app.get('/', function (req, res) {
     res.json({ msg: 'connect', number: '200' });
 });
 app.get('/admin', function (req, res) {
     res.json(config);
 });
-let lastPartner;
 app.post('/logon', function (req, res) {
     if(req.body.name === 'ADMIN') {
         res.json({ref: 'admin', config: config});
